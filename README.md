@@ -1,4 +1,4 @@
-# Mapping Regulatory and Compliance
+# Compliance-Management-System
 
 **Project Overview**  
 This project aims to create a web-based tool for mapping regulatory and compliance requirements. It provides a user-friendly interface for businesses and organizations to visualize, track, and analyze various regulatory guidelines and compliance standards across different industries. The project uses Python for backend processing, and HTML/CSS for the frontend user interface.
