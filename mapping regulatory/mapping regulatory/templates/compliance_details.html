@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compliance Management System</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <style>
+        /* Custom CSS for the page */
+        body {
+            font-family: 'Verdana', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 5px 15px; /* Adjust these values as needed */
+            border-bottom: 1px solid #d6d6d6;
+            box-shadow: 0 0 4px rgba(0,0,0,.1);
+        }
+        .navbar-brand {
+            color: #141414 !important;
+            font-size: 16px;
+        }
+
+        .navbar-nav .nav-link {
+            color: #141414 !important;
+            font-size: 13.5px;
+        }
+
+        .header-title {
+            background-color: #4b5366;
+            color: #ffffff;
+            padding: 16.5px 0;
+            text-align: center;
+        }
+
+        .footer {
+            background-color: #495057;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .content {
+            min-height: 500px;
+            padding: 30px 0;
+        }
+        
+        h1 {
+        font-size: 32.5px; /* Adjust the size as needed */
+        }
+        
+        p{
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header-title">
+        <h1>Compliance Management System</h1>
+        <p>Your comprehensive compliance tracking and management tool</p>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="{{ url_for('index') }}" style="color: #000;">Compliance<span style="color: black;"> Managaement</span></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('index') }}">Add Compliance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('compliance_details') }}">Mapping Regulatory and Compliance</a>
+        </li>
+    </ul>
+</div>
+</nav>
+
+    <!-- Main Content -->
+    <div class="container content">
+        <h2>Compliance Details</h2>
+        <form method="POST" action="{{ url_for('compliance_details') }}">
+            <div class="form-group">
+                <label for="regulatory_body">Select Regulatory Body:</label>
+                <select name="regulatory_body" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    {% for body in regulatory_bodies %}
+                        <option value="{{ body[0] }}" {% if regulatory_body == body[0] %}selected{% endif %}>{{ body[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">get compliance details</button>
+        </form>
+
+        <br>
+
+        {% if selected_compliances %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Compliance Detail</th>
+                        <th>Frequency</th>
+                        <th>Document Reference No.</th>
+                        <th>Consent Valid From</th>
+                        <th>Valid Upto</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for compliance in selected_compliances %}
+                        <tr>
+                            <td>{{ compliance.id }}</td>
+                            <td>{{ compliance.compliance_detail }}</td>
+                            <td>{{ compliance.frequency }}</td>
+                            <td>{{ compliance.doc_ref_no }}</td>
+                            <td>{{ compliance.consent_valid_from }}</td>
+                            <td>{{ compliance.valid_upto }}</td>
+                            <td>{{ compliance.remarks }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('compliance_details', page=page-1) }}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% for p in range(1, total_pages + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('compliance_details', page=p) }}">{{ p }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('compliance_details', page=page+1) }}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <p>No compliance records found for the selected regulatory body.</p>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 Compliance Management System. All rights reserved.</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
