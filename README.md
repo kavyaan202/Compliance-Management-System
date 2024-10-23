@@ -78,8 +78,7 @@ Contributions are welcome! To contribute to this project:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-**Project Maintainer**:  
-Karthik A N  
+**Kavya A N**  
 Email: kavyanagaraj1111@gmail.com
 
 Feel free to reach out if you have any questions or need further information!
