@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Bootstrap Order Details Table with Search Filter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='front.css') }}"> 
+<script>
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+</head>
+<body>
+    <div class="header">
+        <h1>Compliance Management System</h1>
+        <p>Your comprehensive compliance tracking and management tool</p>
+    </div>
+    <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <a href="{{ url_for('index') }}" class="navbar-brand"><i class="fa fa-cube"></i>Compliance<b>Management</b></a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+            <div class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('compliance_details') }}">Mapping Regulatory and Compliance</a>
+                </li>
+        </div>
+        <div class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('indexPage') }}">Due_deligence</a>
+            </li>
+        </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <div class="container">
+        <h2>Compliance Details</h2>
+        <form method="POST" action="{{ url_for('compliance_details') }}">
+            <div class="form-group">
+                <label>Name of Statutory</label>
+                <select class="form-control" id="statutoryFilter" name="statutoryFilter">
+                    <option value="">All</option>
+                    {% for name in statutory_names %}
+                    <option value="{{ name[0] }}" {% if statutory_filter == name[0] %}selected{% endif %}>{{ name[0] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch Compliance Data</button>
+        </form>
+        <div class="container-xl">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <h2>Compliance <b>Details</b></h2>
+                            </div>
+                            <div class="col-sm-8">					
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-filter">
+                        <div class="row">
+                            <div class="col-sm-3">
+                               
+                            </div>
+                            <div class="col-sm-9">
+                                
+                            </div>
+                        </div>
+                    </div>
+        
+        <table class="table table-striped table-hover" id="complianceTable">
+            <thead>
+                <tr>
+                    <th>Compliance Details</th>
+                    <th>Name of Statutory</th>
+                    <th>Frequency</th>
+                    <th>Document Reference Number</th>
+                    <th>Valid From</th>
+                    <th>Valid Upto</th>
+                    <th>Remarks</th>
+                    <!-- <th>Actions</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for compliance in compliances %}
+                <tr id="compliance-{{ compliance.id }}">
+                    <td>{{ compliance.Compliance_Details }}</td>
+                    <td>{{ compliance.Name_of_Statutory }}</td>
+                    <td>{{ compliance.Frequency }}</td>
+                    <td>{{compliance.Document_Reference_Number}}</td>
+                    <td>{{ compliance.Valid_From }}</td>
+                    <td>{{ compliance.Valid_Upto }}</td>
+                    <td>{{ compliance.Remarks }}</td>
+                    
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+        <div class="clearfix">
+            <div class="hint-text">Showing <b>{{ page * 5 if page * 5 < total_entries else total_entries }}</b> 
+                out of <b>{{ total_entries }}</b> entries</div>
+            <ul class="pagination">
+                <li class="page-item {% if page == 1 %}disabled{% endif %}">
+                    <a href="?page={{ page - 1 }}" class="page-link">Previous</a>
+                </li>
+        
+                {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                        <a href="?page={{ p }}" class="page-link">{{ p }}</a>
+                    </li>
+                {% endfor %}
+                
+                <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+                    <a href="?page={{ page + 1 }}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </div>
+        
+                </div>
+            </div>        
+        </div> 
+    </div>
+         <div class="footer">
+            <p>&copy; 2024 Compliance Management System. All Rights Reserved.</p>
+        </div>  
+        <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

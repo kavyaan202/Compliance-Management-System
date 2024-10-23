@@ -1,0 +1,264 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Verdana', sans-serif;
+}
+html,body{
+  width: 100%;
+  height: 100%;
+}
+body {
+background-color: #f8f9fa;
+position: relative;
+}
+
+
+
+/* .navbar {
+background-color: #343a40;
+} */
+
+.title {
+color: white;
+}
+#optionsDropdown {
+transform: translate3d(149px, 30px, 0px);
+top: -38px;
+left: 0px;
+will-change: transform;
+}
+
+.form-container {
+background-color: #fff;
+/* max-width: 300px; */
+/* margin: 0 auto; */
+height: 32rem;
+/* width: 911px; */
+margin: 10px;
+padding: 20px;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.submit-div{
+text-align: center;
+}
+.div-btn-add{
+position: relative;
+}
+
+.add {
+position: absolute;
+top: 0;
+right: 2px;
+}
+.dropdown-menu{
+min-width: 12rem;
+}
+
+.form-title {
+text-align: center;
+}
+
+.form-check {
+padding: 5px 30px;
+}
+
+
+.button-div{
+  text-align: center;
+}
+
+
+footer{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+#customCategory, #customSubcategory{
+/* border: none; */
+border-color: #bfc0c2;
+outline-color: #bfc0c2;
+border-radius: 5px ;
+}
+
+.assets-group{
+display: flex;
+justify-content: space-evenly;
+align-items: center;
+}
+
+table {
+
+table-layout: auto; /* Allows the table to adjust to content */
+border-collapse: collapse; /* Optional: Makes borders collapse into a single border */
+}
+.table{
+max-width: 60rem;
+}
+
+#evaluationForm{
+
+  outline: 1px solid #dbdcdd;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  /* max-width: 90%; */
+
+}
+.edit i {
+color: #FFC107;
+}
+.delete i {
+color: #E34724;
+}
+#tablesContainer{
+overflow-y: auto;
+}
+
+.table-title {
+padding-bottom: 10px;
+margin: 0 0 10px;
+}
+.table-title h2 {
+margin: 6px 0 0;
+font-size: 22px;
+}
+.table-title .add-new {
+float: right;
+height: 30px;
+font-weight: bold;
+font-size: 12px;
+text-shadow: none;
+min-width: 100px;
+border-radius: 50px;
+line-height: 13px;
+}
+.table-title .add-new i {
+margin-right: 4px;
+}
+table.table {
+table-layout: fixed;
+}
+table.table tr th, table.table tr td {
+border-color: #e9e9e9;
+}
+table.table th i {
+font-size: 13px;
+margin: 0 5px;
+cursor: pointer;
+}
+/* table.table th:last-child {
+width: 100px;
+} */
+table.table td a {
+cursor: pointer;
+display: inline-block;
+margin: 0 5px;
+min-width: 24px;
+}    
+table.table td a.add-asset {
+color: #27C46B;
+}
+table.table td a.edit {
+color: #FFC107;
+}
+table.table td a.delete {
+color: #E34724;
+}
+table.table td i {
+font-size: 19px;
+}
+table.table td a.add-asset i {
+font-size: 24px;
+margin-right: -1px;
+position: relative;
+top: 3px;
+}    
+table.table .form-control {
+height: 32px;
+line-height: 32px;
+box-shadow: none;
+border-radius: 2px;
+}
+table.table .form-control.error {
+border-color: #f50000;
+}
+table.table td .add-asset {
+display: none;
+}
+
+html,body {
+color: #566787;
+background: #f5f5f5;
+font-family: 'Verdana', sans-serif;
+font-size: 13px;
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+
+.content {
+flex: 1; /* This makes sure content pushes the footer down if there's enough content */
+padding: 20px;
+}
+.header, .footer {
+background-color: #4b5366;
+color: white;
+padding: 20px;
+text-align: center;
+}
+.footer {
+width: 100%;
+margin-top: auto;
+}
+.container-xl {
+padding-bottom: 60px; /* Leave space for the footer */
+}
+.table-responsive {
+margin: 30px 0;
+}
+.navbar {
+margin-bottom: 20px;
+}
+.navbar-brand{
+display: inline-block;
+padding-top: .3125rem;
+padding-bottom: .3125rem;
+margin-right: 1rem;
+font-size: 1.25rem;
+line-height: inherit;
+white-space: nowrap;
+}
+
+.navbar-header.col {
+padding: 0 !important;
+}
+.navbar {		
+background: #fff;
+padding-left: 16px;
+padding-right: 16px;
+border-bottom: 1px solid #d6d6d6;
+box-shadow: 0 0 4px rgba(0,0,0,.1);
+}
+.nav-link img {
+border-radius: 50%;
+width: 36px;
+height: 36px;
+margin: -8px 0;
+float: left;
+margin-right: 10px;
+}
+.navbar .navbar-brand {
+color: #555;
+padding-left: 0;
+padding-right: 50px;
+font-family: 'Merienda One', sans-serif;
+}
+.navbar .navbar-brand i {
+font-size: 20px;
+margin-right: 5px;
+}

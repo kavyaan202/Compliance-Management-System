@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="{{ url_for('static', filename='due_deligence.css') }}">
+</head>
+<body>
+
+  <div class="header">
+    <h1>Compliance Management System</h1>
+    <p>Your comprehensive compliance tracking and management tool</p>
+</div>
+<nav class="navbar navbar-expand-xl navbar-light bg-light">
+    <a href="{{ url_for('index') }}" class="navbar-brand"><i class="fa fa-cube"></i>Compliance<b>Management</b></a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Collection of nav links, forms, and other content for toggling -->
+    <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+        <div class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('compliance_details') }}">Mapping Regulatory and Compliance</a>
+            </li>
+    </div>
+    <div class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('indexPage') }}">Due_deligence</a>
+        </li>
+    </div>
+    
+  </div>
+  </nav>
+  <!-- <nav class="navbar navbar-expand-lg navbar-dark py-3">
+    <div class="container navbar-container">
+      <h2 class="title">Due - Deligence Report</h2>
+    </div>
+  </nav> -->
+
+  <div class="mt-2 form-container" style="display: flex;">
+    <div style=" margin-right: 20px;">
+        <h3 class="form-title">Evaluation Report</h3>
+        <form id="evaluationForm">
+            <div class="form-group">
+                <label for="category" >Category:</label>
+                <select id="category" name="category" class="form-control" onchange="populateSubCategory()">
+                    <option value="">Select Category</option>
+                    <option value="Electrical System">Electrical System</option>
+                    <option value="Mechanical System">Mechanical System</option>
+                    <option value="Water and Waste System">Water and Waste System</option>
+                    <option value="Fire Protection System">Fire Protection System</option>
+                    <option value="Building Services and Amenities">Building Services and Amenities</option>
+                    <option value="Security System">Security System</option>
+                    <option value="Other">Other</option>
+                </select>
+                <div style="display: flex; align-items: center;" class="mt-2">
+                    <input type="text" id="customCategory" placeholder="Enter custom category" class="mr-2 p-1" style="display:none; width: 90%;">
+                    <button type="button" id="saveCustomCategory" style="display:none;" class="p-1 btn btn-primary" onclick="saveCustom()">Save</button>
+                </div>
+            </div>
+        
+            <div class="form-group">
+                <label for="subcategory">Sub Category:</label>
+                <select id="subcategory" name="subcategory" class="form-control" onchange="populateOptions()">
+                    <option value="">Select Sub Category</option>
+                </select>
+                <div style="display: flex; align-items: center; margin-top: .5rem;">
+                    <input type="text" id="customSubcategory" placeholder="Enter custom subcategory" class="mr-2 p-1" style="display:none; width: 90%;">
+                    <button type="button" id="saveCustomSubcategory" style="display:none;" class="p-1 btn btn-primary" onclick="saveCustomSub()">Save</button>
+                </div>
+            </div>
+        
+            <div class="form-group assets-group">
+                <label for="options" style="display: inline;">Assets:</label>
+                <div class="dropdown" style="display: inline;">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Assets
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="optionsDropdown">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="selectAll" onclick="toggleSelectAll()">
+                            <label class="form-check-label" for="selectAll">Select All</label>
+                        </div>
+                        <div id="optionsList"></div>
+                        <div class="form-group mt-2">
+                          <div class="button-div div-btn-add">
+                              <input type="text" id="customOption" class="form-control" placeholder="Enter custom option" />
+                              <button type="button" class="btn btn-primary btn-sm mt-1 add-form" onclick="addCustomOption()">+</button>
+                            </div>
+                            
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="button-div">
+                            <button type="button" class="btn btn-primary btn-sm" id="saveOptionsBtn" onclick="saveOptions()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-div">
+
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div id="tablesContainer" style="flex: 1;"></div>
+    <!-- <table class="container table table-bordered" id="resultTable" style="display: none;">
+        <thead>
+            <tr>
+                <th class="col-2">Category</th>
+                <th class="col-2">Subcategory</th>
+                <th colspan="3" id="assetsHeader" class="col-8">Assets</th>
+            </tr>
+            <tr id="assetsRow"></tr>
+        </thead>
+        <tbody></tbody>
+    </table>  -->
+  </div>
+
+
+  <!-- <div class="mt-5 w-90">
+    
+  </div> -->
+
+  <!-- <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Subcategory</th>
+        <th colspan="3">Assets</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>first</td><td>second</td><td>asset 1</td><td>asset 2</td><td>asset 3</td></tr>
+
+    </tbody>
+  </table> -->
+
+  <div class="footer">
+    <p>&copy; 2024 Compliance Management System. All Rights Reserved.</p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  
+  <script src="{{ url_for('static', filename='js/due_deligence.js') }}" ></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Bootstrap Order Details Table with Search Filter</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='front.css') }}"> 
+<script>
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+</head>
+<body>
+    <div class="header">
+        <h1>Compliance Management System</h1>
+        <p>Your comprehensive compliance tracking and management tool</p>
+    </div>
+    <nav class="navbar navbar-expand-xl navbar-light bg-light">
+        <a href="#" class="navbar-brand"><i class="fa fa-cube"></i>Compliance<b>Management</b></a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+            <div class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('compliance_details') }}">Mapping Regulatory and Compliance</a>
+                </li>
+        </div>
+        <div class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('indexPage') }}">Due_deligence</a>
+            </li>
+        </div>
+        
+        </div>
+    </nav>
+<!-- <div class="container-xl" id="complianceTableSection" style="display:none;"> -->
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h2>Compliance <b>Details</b></h2>
+                    </div>
+                    <div class="col-sm-8">						
+                      <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Compliance</span></a>
+                        <!-- <a href="#" class="btn btn-secondary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a> -->
+                    </div>
+                </div>
+            </div>
+            <div class="table-filter">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- <div class="show-entries">
+                            <span>Show</span>
+                            <select class="form-control">
+                                <option>5</option>
+                                <option>10</option>
+                                <option>15</option>
+                                <option>20</option>
+                            </select>
+                            <span>entries</span>
+                        </div> -->
+                    </div>
+                    <div class="col-sm-9">
+                        <button type="button" class="btn btn-primary" onclick="performSearch()">
+                            <i class="fa fa-search"></i> Search
+                        </button>
+                        <div class="filter-group">
+                            <label>Search</label>
+                            <input type="text" class="form-control" id="searchInput" 
+                                   value="{{ search_query }}" onkeyup="performSearch()" placeholder="Search in all columns">
+                        </div>
+                        <div class="filter-group">
+                            <label>Name of Statutory</label>
+                            <select class="form-control" id="statutoryFilter" onchange="performSearch()">
+                                <option value="">All</option>
+                                {% for name in statutory_names %}
+                                <option value="{{ name[0] }}" {% if statutory_filter == name[0] %}selected{% endif %}>{{ name[0] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <span class="filter-icon"><i class="fa fa-filter"></i></span>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover" id="complianceTable">
+    <thead>
+        <tr>
+            <th>Compliance Details</th>
+            <th>Name of Statutory</th>
+            <th>Frequency</th>
+            <th>Document Reference Number</th>
+            <th>Valid From</th>
+            <th>Valid Upto</th>
+            <th>Remarks</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for compliance in compliances %}
+        <tr id="compliance-{{ compliance.id }}">
+            <td>{{ compliance.Compliance_Details }}</td>
+            <td>{{ compliance.Name_of_Statutory }}</td>
+            <td>{{ compliance.Frequency }}</td>
+            <td>{{compliance.Document_Reference_Number}}</td>
+            <td>{{ compliance.Valid_From }}</td>
+            <td>{{ compliance.Valid_Upto }}</td>
+            <td>{{ compliance.Remarks }}</td>
+            <td>
+                <a href="#editComplianceModal" class="edit" data-toggle="modal" 
+                    onclick="openEditComplianceModal('{{ compliance.id }}', 
+                    '{{ compliance.Compliance_Details }}', 
+                    '{{ compliance.Name_of_Statutory }}', 
+                    '{{ compliance.Frequency }}',
+                    '{{compliance.Document_Reference_Number}}',
+                    '{{ compliance.Valid_From }}', 
+                    '{{ compliance.Valid_Upto }}', 
+                    '{{ compliance.Remarks }}')">
+                    <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                </a>
+                <a href="#deleteComplianceModal" class="delete" data-toggle="modal" onclick="prepareDelete('{{ compliance.id }}')">
+                    <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="clearfix">
+    <div class="hint-text">
+        Showing <b>{{ page * 5 if page * 5 < total_entries else total_entries }}</b> out of 
+        <b>{{ total_entries }}</b> entries
+    </div>
+    <ul class="pagination">
+        <li class="page-item {% if page == 1 %}disabled{% endif %}">
+            <a href="?page={{ page - 1 }}&statutory_filter={{ statutory_filter }}&search={{ search_query }}" 
+               class="page-link">Previous</a>
+        </li>
+
+        {% for p in range(1, total_pages + 1) %}
+            <li class="page-item {% if p == page %}active{% endif %}">
+                <a href="?page={{ p }}&statutory_filter={{ statutory_filter }}&search={{ search_query }}" 
+                   class="page-link">{{ p }}</a>
+            </li>
+        {% endfor %}
+
+        <li class="page-item {% if page == total_pages %}disabled{% endif %}">
+            <a href="?page={{ page + 1 }}&statutory_filter={{ statutory_filter }}&search={{ search_query }}" 
+               class="page-link">Next</a>
+        </li>
+    </ul>
+</div>
+
+
+        </div>
+    </div>        
+</div> 
+ <div class="footer">
+    <p>&copy; 2024 Compliance Management System. All Rights Reserved.</p>
+</div>  
+  <!-- add the employee -->
+  <div id="addEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="complianceForm" action="{{ url_for('add_compliance') }}" method="POST">
+                <div class="modal-header">						
+                    <h4 class="modal-title">Add Regulatory Compliance</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">					
+                    <div class="form-group">
+                        <label>Compliance Details</label>
+                        <input type="text" class="form-control" name="Compliance_Details" >
+                        <div class="error-message" id="Compliance_Details_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name of Statutory</label>
+                        <input type="text" class="form-control" name="Name_of_Statutory" >
+                        <div class="error-message" id="Name_of_Statutory_error"></div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Frequency</label>
+                        <input type="text" class="form-control" name="Frequency" >
+                        <div class="error-message" id="Frequency_error"></div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="Frequency">Frequency</label>
+                        <select class="form-control" name="Frequency" id="Frequency">
+                            <option value="">-- Select Frequency --</option>
+                            {% for frequency in frequencies %}
+                            <option value="{{ frequency.frequency_name }}">{{ frequency.frequency_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="error-message" id="Frequency_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Document Reference Number</label>
+                        <input type="text" class="form-control" name="Document_Reference_Number" >
+                        <div class="error-message" id="Document_Reference_Number_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Valid From</label>
+                        <input type="date" class="form-control" name="Valid_From" >
+                        <div class="error-message" id="Valid_From_error"></div>
+                    </div>	
+                    <div class="form-group">
+                        <label>Valid Upto</label>
+                        <input type="date" class="form-control" name="Valid_Upto" >
+                        <div class="error-message" id="Valid_Upto_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea class="form-control" name="Remarks" ></textarea>
+                        <div class="error-message" id="Remarks_error"></div>
+                    </div>				
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel" id="">
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Compliance Modal -->
+<div id="editComplianceModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editComplianceForm" method="POST">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Compliance</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Compliance Details</label>
+                        <input type="text" class="form-control" name="Compliance_Details" id="editComplianceDetails" >
+                        <div class="error-message" id="editCompliance_Details_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Name of Statutory</label>
+                        <input type="text" class="form-control" name="Name_of_Statutory" id="editNameOfStatutory" >
+                        <div class="error-message" id="editName_of_Statutory_error"></div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Frequency</label>
+                        <input type="text" class="form-control" name="Frequency" id="editFrequency" >
+                        <div class="error-message" id="editFrequency_error"></div>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="Frequency">Frequency</label>
+                        <select class="form-control" name="Frequency" id="editFrequency">
+                            <option value="">-- Select Frequency --</option>
+                            {% for frequency in frequencies %}
+                            <option value="{{ frequency.frequency_name }}">{{ frequency.frequency_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="error-message" id="editFrequency_error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Document Reference Number</label>
+                        <input type="text" class="form-control" name="Document_Reference_Number" id="editDocument_Reference_Number" >
+                        <div class="error-message" id="editDocument_Reference_Number_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Valid From</label>
+                        <input type="date" class="form-control" name="Valid_From" id="editValidFrom" >
+                        <div class="error-message" id="editValid_From_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Valid Upto</label>
+                        <input type="date" class="form-control" name="Valid_Upto" id="editValidUpto" >
+                        <div class="error-message" id="editValid_Upto_error"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <textarea class="form-control" name="Remarks" id="editRemarks" ></textarea>
+                        <div class="error-message" id="editRemarks_error"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-info" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+  <!-- Delete Modal HTML -->
+  <div id="deleteComplianceModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteComplianceForm" method="POST">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Compliance</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this compliance record?</p>
+                    <p class="text-warning"><small>This action cannot be undone.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/validation.js') }}"></script>
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+    // JavaScript to show the compliance table when the "Add Compliance" nav item is clicked
+    document.getElementById('addComplianceNav').addEventListener('click', function() {
+        document.getElementById('complianceTableSection').style.display = 'block';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
